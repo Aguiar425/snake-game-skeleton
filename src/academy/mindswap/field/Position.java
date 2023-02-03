@@ -10,6 +10,14 @@ public class Position {
         this.row = row;
     }
 
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
     public int getCol() {
         return col;
     }

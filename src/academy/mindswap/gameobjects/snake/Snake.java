@@ -12,68 +12,63 @@ public class Snake {
     private Direction direction;
     private boolean alive;
 
-    private Position head;
-    private Position tail;
-    private int size = SNAKE_INITIAL_SIZE;
-    int startingCol = RandomNumberGenerator.generateRandom(Field.getWidth()-5, 5);
-    int startingRow = RandomNumberGenerator.generateRandom(Field.getHeight()-5, 5);
-
     private LinkedList<Position> snakeBody;
 
-    public Snake(Direction startingDir) {
+    public Snake() {
 
-        this.direction = startingDir;
+        this.direction = Direction.RIGHT;
         this.snakeBody = new LinkedList<>();
-
-        this.head = new Position(this.startingCol, this.startingRow);
-        snakeBody.add(head);
-        for(int i = 1; i < SNAKE_INITIAL_SIZE; i++)
+        /*this.head = new Position(50, 12);
+        snakeBody.add(new Position(50,12));*/
+        for(int i = 0; i < SNAKE_INITIAL_SIZE; i++)
         {
-            snakeBody.add(new Position(head.getCol()-i, head.getRow()));
+            snakeBody.add(i, new Position(50-i, 12));
         }
-        tail = snakeBody.getLast();
+        //this.tail = snakeBody.getLast();
         this.alive = true;
     }
 
     public void increaseSize() {
-        snakeBody.add(new Position(tail.getCol()-1, tail.getRow()));
-        size++;
+        /*snakeBody.add(new Position(snakeBody.getTail.getCol()-1, tail.getRow()));
+        size++;*/
     }
 
 
     public void move(Direction direction){
-        Position temp;
         switch (direction){
             case UP :
-                temp = new Position(tail.getCol(), tail.getRow()-1);
-                this.snakeBody.remove(tail);
-                snakeBody.add(temp);
-                this.head = temp;
-                this.direction = Direction.UP;
+                snakeBody.removeLast();
+                snakeBody.addFirst(new Position(snakeBody.get(0).getCol(), snakeBody.get(0).getRow()-1));
+                /*head.setRow(tail.getRow()-1);
+                setTail(snakeBody.getLast());*/
+                setDirection(Direction.UP);
+                break;
             case DOWN :
-                temp = new Position(tail.getCol(), tail.getRow()+1);
-                this.snakeBody.remove(tail);
+                /*temp = new Position(head.getCol(), head.getRow()-1);
+                Field.clearTail(this);
                 snakeBody.add(temp);
-
-                this.head = temp;
-                this.direction = Direction.DOWN;
+                this.head = temp;*/
+                /*head = tail;
+                head.setRow(tail.getRow()+1);
+                Field.clearTail(this);
+                setTail(snakeBody.getLast());
+                setDirection(Direction.DOWN);*/
+                snakeBody.removeLast();
+                snakeBody.addFirst(new Position(snakeBody.get(0).getCol(), snakeBody.get(0).getRow()+1));
+                setDirection(Direction.DOWN);
+                break;
 
             case RIGHT :
-                temp = new Position(tail.getCol()+1, tail.getRow());
-                this.snakeBody.remove(tail);
-                snakeBody.add(temp);
-
-                this.head = temp;
-                this.direction = Direction.RIGHT;
+                snakeBody.removeLast();
+                snakeBody.addFirst(new Position(snakeBody.get(0).getCol()+1, snakeBody.get(0).getRow()));
+                setDirection(Direction.RIGHT);
+                break;
 
             case LEFT :
-                temp = new Position(tail.getCol()-1, tail.getRow());
-                this.snakeBody.remove(tail);
-                snakeBody.add(temp);
-
-                this.head = temp;
-                this.direction = Direction.LEFT;
-
+                snakeBody.removeLast();
+                snakeBody.addFirst(new Position(snakeBody.get(0).getCol()-1, snakeBody.get(0).getRow()));
+                setDirection(Direction.LEFT);
+                break;
         }
     }
 
@@ -90,20 +85,24 @@ public class Snake {
     }
 
     public Position getHead() {
-        return this.head;
+        return this.snakeBody.getFirst();
     }
 
     public Position getTail() {
-        return this.tail;
+        return this.snakeBody.getLast();
     }
 
     public LinkedList<Position> getFullSnake(){
         return this.snakeBody;
     }
 
-    public int getSnakeSize() {
-        return 0;
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
+
+    /*public int getSnakeSize() {
+        return size;
+    }*/
 
 }
 
