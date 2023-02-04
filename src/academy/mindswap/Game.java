@@ -32,11 +32,20 @@ public class Game {
     }
 
     private void generateFruit() {
-        int fruitNum = 0;
-        int randomCol = RandomNumberGenerator.generateRandom(Field.getWidth()-5, 5);
-        int randomRow = RandomNumberGenerator.generateRandom(Field.getHeight()-5, 5);
-            fruit = new Fruit(new Position(randomCol,randomRow));
-            Field.drawFruit(fruit);
+        int randomCol = RandomNumberGenerator.generateRandom(Field.getWidth()+5 , 5);
+        int randomRow = RandomNumberGenerator.generateRandom(Field.getHeight()+5 , 5);
+        if(randomCol == Field.getWidth() || randomCol == 0){
+            randomCol = RandomNumberGenerator.generateRandom(Field.getWidth()+5 , 5);
+        }
+        if(randomRow == Field.getHeight() || randomRow == 0){
+            randomRow = RandomNumberGenerator.generateRandom(Field.getHeight()+5 , 5);
+        }
+        fruit = new Fruit(new Position(randomCol, randomRow));
+        /*for (int i = 0; i < snake.getFullSnake().size(); i++) {
+            while(fruit.getPosition() == snake.getFullSnake().get(i)){
+            }
+        }*/
+        Field.drawFruit(fruit);
     }
 
     private void moveSnake() {
@@ -46,18 +55,30 @@ public class Game {
         if (k != null) {
             switch (k.getKind()) {
                 case ArrowUp:
+                    if(snake.getDirection() == Direction.DOWN){
+                        return;
+                    }
                     snake.move(Direction.UP);
                     return;
 
                 case ArrowDown:
+                    if(snake.getDirection() == Direction.UP){
+                        return;
+                    }
                     snake.move(Direction.DOWN);
                     return;
 
                 case ArrowLeft:
+                    if(snake.getDirection() == Direction.RIGHT){
+                        return;
+                    }
                     snake.move(Direction.LEFT);
                     return;
 
                 case ArrowRight:
+                    if(snake.getDirection() == Direction.LEFT){
+                        return;
+                    }
                     snake.move(Direction.RIGHT);
                     return;
             }
@@ -66,20 +87,26 @@ public class Game {
     }
 
     private void checkCollisions() {
-        if(snake.getFullSnake().getFirst().getRow() == fruit.getPosition().getRow() && snake.getFullSnake().getFirst().getCol() == fruit.getPosition().getCol()){
+        if (snake.getFullSnake().getFirst().getRow() == fruit.getPosition().getRow() && snake.getFullSnake().getFirst().getCol() == fruit.getPosition().getCol()) {
             fruit.setFruitPos(null);
             generateFruit();
             snake.increaseSize();
         }
-        if(snake.getFullSnake().getFirst().getRow() == 0 || snake.getFullSnake().getFirst().getRow() == Field.getHeight()){
+        if (snake.getFullSnake().getFirst().getRow() == 0 || snake.getFullSnake().getFirst().getRow() == Field.getHeight()) {
             snake.die();
         }
-        if(snake.getFullSnake().getFirst().getCol() == 0 || snake.getFullSnake().getFirst().getCol() == Field.getWidth()){
+        if (snake.getFullSnake().getFirst().getCol() == 0 || snake.getFullSnake().getFirst().getCol() == Field.getWidth()) {
             snake.die();
         }
 
-        if(fruit == null){
-            generateFruit();
+        for (int i = 1; i < snake.getFullSnake().size(); i++) {
+            if (snake.getFullSnake().getFirst().getRow() == snake.getFullSnake().get(i).getRow() && snake.getFullSnake().getFirst().getCol() == snake.getFullSnake().get(i).getCol()) {
+                snake.die();
+            }
+
+            if (fruit == null) {
+                generateFruit();
+            }
         }
     }
 }

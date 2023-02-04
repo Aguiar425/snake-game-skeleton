@@ -1,11 +1,7 @@
 package academy.mindswap.gameobjects.snake;
 
-import academy.mindswap.RandomNumberGenerator;
-import academy.mindswap.field.Field;
 import academy.mindswap.field.Position;
-
 import java.util.LinkedList;
-import java.util.Objects;
 
 public class Snake {
 
@@ -63,6 +59,7 @@ public class Snake {
 
     public void die() {
         alive = false;
+        setDirection(null);
     }
 
     public boolean isAlive() {
@@ -79,6 +76,10 @@ public class Snake {
 
     public LinkedList<Position> getFullSnake(){
         return this.snakeBody;
+    }
+
+    public Direction getDirection() {
+        return direction;
     }
 
     public void setDirection(Direction direction) {
