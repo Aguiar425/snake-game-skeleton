@@ -12,11 +12,13 @@ public class Game {
     private Snake snake;
     private Fruit fruit;
     private int delay;
+    private int score;
 
     public Game(int cols, int rows, int delay) {
         Field.init(cols, rows);
         snake = new Snake();
         this.delay = delay;
+        this.score = 0;
     }
 
     public void start() throws InterruptedException {
@@ -90,6 +92,13 @@ public class Game {
         if (snake.getFullSnake().getFirst().getRow() == fruit.getPosition().getRow() && snake.getFullSnake().getFirst().getCol() == fruit.getPosition().getCol()) {
             fruit.setFruitPos(null);
             generateFruit();
+            score++;
+            if(score >= 5){
+                this.delay = delay -10;
+            }
+            if(score >= 10){
+                this.delay = delay -10;
+            }
             snake.increaseSize();
         }
         if (snake.getFullSnake().getFirst().getRow() == 0 || snake.getFullSnake().getFirst().getRow() == Field.getHeight()) {
